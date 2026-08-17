@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมแปลงอัตราแลกเปลี่ยนเงินตรา</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select, button { width: 100%; padding: 8px; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .rate-info { margin-top: 15px; font-weight: bold; color: #333; }
+        .last-updated { font-size: 0.85em; color: #666; margin-top: 5px; }
+        .history-section { margin-top: 25px; border-top: 1px solid #ccc; pt: 15px; }
+        ul { padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+    <h2>เครื่องมือแปลงสกุลเงิน</h2>
+
+    <!-- Input ช่องต้นทาง -->
+    <div class="form-group">
+        <label for="currency-one">สกุลเงินต้นทาง:</label>
+        <select id="currency-one">
+            <option value="USD" selected>USD</option>
+            <option value="THB">THB</option>
+            <option value="EUR">EUR</option>
+            <option value="JPY">JPY</option>
+        </select>
+        <input type="number" id="amount-one" value="1" placeholder="0">
+    </div>
+
+    <!-- Input ช่องปลายทาง -->
+    <div class="form-group">
+        <label for="currency-two">สกุลเงินปลายทาง:</label>
+        <select id="currency-two">
+            <option value="USD">USD</option>
+            <option value="THB" selected>THB</option>
+            <option value="EUR">EUR</option>
+            <option value="JPY">JPY</option>
+        </select>
+        <input type="number" id="amount-two" placeholder="0">
+    </div>
+
+    <!-- ข้อความอัตราแลกเปลี่ยนและโจทย์ที่ 4: แสดงเวลาที่อัปเดตล่าสุด -->
+    <div class="rate-info" id="rate-text">1 USD = 0 THB</div>
+    <div class="last-updated" id="last-updated">เวลาอัปเดตล่าสุด: -</div>
+
+    <!-- โจทย์ที่ 3: ปุ่มล้างข้อมูล -->
+    <div class="btn-group">
+        <button id="clear-btn">ล้างข้อมูล</button>
+    </div>
+
+    <!-- โจทย์ที่ 2: ส่วนประวัติการแปลงเงิน -->
+    <div class="history-section">
+        <h3>ประวัติการแปลงเงินย้อนหลัง 10 รายการล่าสุด</h3>
+        <ul id="history-list"></ul>
+        <button id="clear-history-btn">ล้างประวัติ</button>
+    </div>
+
+    <script>
+        const currencyOne = document.getElementById('currency-one');
+        const amountOne = document.getElementById('amount-one');
+        const currencyTwo = document.getElementById('currency-two');
+        const amountTwo = document.getElementById('amount-two');
+        const rateText = document.getElementById('rate-text');
+        const lastUpdatedText = document.getElementById('last-updated');
+        const clearBtn = document.getElementById('clear-btn');
+        const historyList = document.getElementById('history-list');
+        const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+        let exchangeRate = 1;
+        let historyData = [];
+
+        // ดึงข้อมูลอัตราแลกเปลี่ยนจาก API
+        async function fetchRates() {
+            const curr1 = currencyOne.value;
+            const curr2 = currencyTwo.value;
+            try {
+                const res = await fetch(`https://open.er-api.com/v6/latest/${curr1}`);
+                const data = await res.json();
+                exchangeRate = data.rates[curr2];
+                
+                // โจทย์ที่ 4: แสดงเวลาที่อัปเดตล่าสุด
+                const now = new Date();
+                lastUpdatedText.innerText = `เวลาอัปเดตล่าสุด: ${now.toLocaleDateString('th-TH')} ${now.toLocaleTimeString('th-TH')}`;
+                
+                rateText.innerText = `1 ${curr1} = ${exchangeRate.toFixed(4)} ${curr2}`;
+            } catch (error) {
+                rateText.innerText = "ไม่สามารถดึงข้อมูลอัตราแลกเปลี่ยนได้";
+            }
+        }
+
+        // คำนวณจากต้นทางไปปลายทาง (โจทย์ข้อ 1)
+        async function calculateFromOne() {
+            await fetchRates();
+            if (amountOne.value === '') {
+                amountTwo.value = '';
+                return;
+            }
+            const valTwo = (parseFloat(amountOne.value) * exchangeRate).toFixed(2);
+            amountTwo.value = valTwo;
+            addHistory(amountOne.value, currencyOne.value, valTwo, currencyTwo.value);
+        }
+
+        // โจทย์ที่ 1: คำนวณย้อนกลับจากปลายทางมาต้นทาง
+        async function calculateFromTwo() {
+            await fetchRates();
+            if (amountTwo.value === '') {
+                amountOne.value = '';
+                return;
+            }
+            const valOne = (parseFloat(amountTwo.value) / exchangeRate).toFixed(2);
+            amountOne.value = valOne;
+            addHistory(valOne, currencyOne.value, amountTwo.value, currencyTwo.value);
+        }
+
+        // โจทย์ที่ 2: บันทึกและแสดงประวัติ 10 รายการล่าสุด
+        function addHistory(val1, curr1, val2, curr2) {
+            if (!val1 || !val2) return;
+            const entry = `${parseFloat(val1).toLocaleString()} ${curr1} → ${parseFloat(val2).toLocaleString()} ${curr2}`;
+            
+            // ป้องกันรายการซ้ำติดกัน
+            if (historyData.length > 0 && historyData[0] === entry) return;
+
+            historyData.unshift(entry);
+            if (historyData.length > 10) historyData.pop(); // เก็บไม่เกิน 10 รายการ
+
+            renderHistory();
+        }
+
+        function renderHistory() {
+            historyList.innerHTML = '';
+            historyData.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                historyList.appendChild(li);
+            });
+        }
+
+        // โจทย์ที่ 3: ปุ่มล้างข้อมูล คืนค่า Input และสถานะเริ่มแรก
+        clearBtn.addEventListener('click', () => {
+            amountOne.value = 1;
+            currencyOne.value = 'USD';
+            currencyTwo.value = 'THB';
+            calculateFromOne();
+        });
+
+        // ล้างประวัติการแปลงเงิน
+        clearHistoryBtn.addEventListener('click', () => {
+            historyData = [];
+            renderHistory();
+        });
+
+        // Event Listeners การกรอกข้อมูลและการเปลี่ยนสกุลเงิน
+        amountOne.addEventListener('input', calculateFromOne);
+        amountTwo.addEventListener('input', calculateFromTwo); // แปลงย้อนกลับ (โจทย์ข้อ 1)
+        currencyOne.addEventListener('change', calculateFromOne);
+        currencyTwo.addEventListener('change', calculateFromOne);
+
+        // คำนวณค่าเริ่มต้นเมื่อโหลดหน้าเว็บ
+        calculateFromOne();
+    </script>
+</body>
+</html>
