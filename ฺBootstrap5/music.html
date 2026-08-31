@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LYKN - Official Fan Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #0d0e12;
+            color: #ffffff;
+            padding-top: 70px;
+        }
+        .navbar-brand img {
+            max-height: 40px;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(13,14,18,1)), url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1200&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0 60px 0;
+        }
+        .profile-card {
+            background-color: #16181f;
+            border: 1px solid #2a2d37;
+            transition: transform 0.3s ease;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+        .profile-card img {
+            height: 260px;
+            object-fit: cover;
+        }
+        .song-card {
+            background-color: #16181f;
+            border: 1px solid #2a2d37;
+            transition: transform 0.3s ease;
+        }
+        .song-card:hover {
+            transform: scale(1.02);
+        }
+        .song-card img {
+            height: 200px;
+            object-fit: cover;
+        }
+        .btn-custom {
+            background-color: #2bb0ce;
+            color: #000;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+        .btn-custom:hover {
+            background-color: #00a0c6;
+            color: white;
+        }
+        footer {
+            background-color: #050608;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=200&auto=format&fit=crop" alt="LYKN Logo" class="rounded-circle border border-info">
+                <span class="fw-bold fs-4 text-info">LYKN</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">หน้าแรก & สมาชิก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#music">ผลงานเพลงยอดฮิต</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">ติดตาม & ติดต่องาน</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home">
+        <div class="hero-section text-center text-white">
+            <div class="container">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=200&auto=format&fit=crop" alt="LYKN Logo" class="img-fluid rounded-circle mb-3 shadow-lg border border-3 border-info" style="width: 130px; height: 130px; object-fit: cover;">
+                <h1 class="display-3 fw-bold text-info">LYKN (ไลแคน)</h1>
+                <p class="lead text-light max-w-600 mx-auto">บอยแบนด์ T-POP สุดฮอตผู้ชนะจากรายการ Project Alpha สังกัดค่าย RISER MUSIC ในเครือ GMMTV</p>
+                <a href="#music" class="btn btn-custom px-4 py-2 mt-3 fs-5"><i class="bi bi-play-fill me-1"></i>ฟังเพลงของ LYKN</a>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-uppercase display-6">สมาชิกในวง (Band Members)</h2>
+                <div class="mx-auto bg-info" style="height: 3px; width: 80px;"></div>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card profile-card h-100 text-white shadow">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" class="card-img-top" alt="วิลเลี่ยม">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold text-info">วิลเลี่ยม (William)</h5>
+                            <p class="card-text text-secondary mb-1">จักรภัทร แก้วพันธุ์พงษ์</p>
+                            <span class="badge bg-info text-dark mb-2">Main Vocal</span>
+                            <p class="card-text fs-7 text-muted">เมนโวคอลเสียงทรงพลังการันตีตำแหน่งผู้ชนะอันดับ 1 จากรายการ Project Alpha</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card profile-card h-100 text-white shadow">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop" class="card-img-top" alt="เลโก้">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold text-info">เลโก้ (Lego)</h5>
+                            <p class="card-text text-secondary mb-1">รพีพงศ์ ศุภธินีกิตติ์เดชา</p>
+                            <span class="badge bg-secondary mb-2">Main Dancer / Lead Vocal</span>
+                            <p class="card-text fs-7 text-muted">น้องเล็กไลน์เต้นสุดพริ้วไหว เจ้าของทักษะการเต้นระดับพรสวรรค์และเสียงร้องมีเสน่ห์</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card profile-card h-100 text-white shadow">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop" class="card-img-top" alt="นัท">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold text-info">นัท (Nut)</h5>
+                            <p class="card-text text-secondary mb-1">ธนัท ด่านเจษฎา</p>
+                            <span class="badge bg-secondary mb-2">Visual / Vocal</span>
+                            <p class="card-text fs-7 text-muted">พี่ใหญ่ของวงที่มีเสน่ห์ล้นเหลือ รูปร่างสูงโปร่งพร้อมเสียงร้องที่อบอุ่นนุ่มลึก</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card profile-card h-100 text-white shadow">
+                        <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=400&auto=format&fit=crop" class="card-img-top" alt="ฮง">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold text-info">ฮง (Hong)</h5>
+                            <p class="card-text text-secondary mb-1">พิเชฐพงศ์ จิรเดชสกลวัชร</p>
+                            <span class="badge bg-secondary mb-2">Main Rapper</span>
+                            <p class="card-text fs-7 text-muted">แร็ปเปอร์ประจำวงที่มีสไตล์โดดเด่นและเต็มไปด้วยพลังสร้างความสนุกบนเวที</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card profile-card h-100 text-white shadow">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop" class="card-img-top" alt="ตุ้ย">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold text-info">ตุ้ย (Tui)</h5>
+                            <p class="card-text text-secondary mb-1">ชยธร ไตรรัตนประดิษฐ์</p>
+                            <span class="badge bg-secondary mb-2">Lead Rapper / Vocal</span>
+                            <p class="card-text fs-7 text-muted">หนุ่มอารมณ์ดีผู้มาพร้อมความสามารถรอบด้าน ทั้งแร็ป ร้อง และสร้างรอยยิ้ม</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-secondary container my-5">
+
+    <section id="music" class="container my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-uppercase display-6">ผลงานเพลงฮิตติดอันดับ (Discography)</h2>
+            <div class="mx-auto bg-info" style="height: 3px; width: 80px;"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card song-card h-100 text-white shadow">
+                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop" class="card-img-top" alt="ฉ่ำ (CHARM)">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-info text-dark">ยอดวิวสูงสุด / Hit Song</span>
+                            <small class="text-muted">ปี 2024</small>
+                        </div>
+                        <h5 class="card-title fw-bold">1. ฉ่ำ (CHARM)</h5>
+                        <p class="card-text text-secondary fs-7">LYKN x JOONG, POND</p>
+                        <p class="card-text">เพลงจังหวะมันส์ๆ สไตล์ T-POP ที่โชว์เสน่ห์ความฉ่ำและไลน์เต้นสุดแข็งแกร่งของวง</p>
+                        <a href="https://www.youtube.com/watch?v=Jm9qJc1bQTo" target="_blank" class="btn btn-danger mt-auto fw-bold">
+                            <i class="bi bi-youtube me-2"></i>รับชมบน YouTube
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card song-card h-100 text-white shadow">
+                    <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=600&auto=format&fit=crop" class="card-img-top" alt="เลิกกับเขาเดี๋ยวเหงาเป็นเพื่อน (MAY I?)">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-info text-dark">Top Popular</span>
+                            <small class="text-muted">ปี 2023</small>
+                        </div>
+                        <h5 class="card-title fw-bold">2. เลิกกับเขาเดี๋ยวเหงาเป็นเพื่อน (MAY I?)</h5>
+                        <p class="card-text text-secondary fs-7">Single ที่ 2 ของ LYKN</p>
+                        <p class="card-text">เพลงจังหวะน่ารักกับเนื้อหาหยอกล้อ ชวนให้อมยิ้มตามความขี้เล่นของทั้ง 5 หนุ่ม</p>
+                        <a href="https://www.youtube.com/watch?v=s5R-5Gq8Q_E" target="_blank" class="btn btn-danger mt-auto fw-bold">
+                            <i class="bi bi-youtube me-2"></i>รับชมบน YouTube
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card song-card h-100 text-white shadow">
+                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600&auto=format&fit=crop" class="card-img-top" alt="เลิกลา (UMM UMM)">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-info text-dark">Debut Single</span>
+                            <small class="text-muted">ปี 2023</small>
+                        </div>
+                        <h5 class="card-title fw-bold">3. เลิกลา (UMM UMM)</h5>
+                        <p class="card-text text-secondary fs-7">Debut Single</p>
+                        <p class="card-text">เพลงเดบิวต์เด็ดๆ ที่เปิดตัววง LYKN สู่สถาบัน T-POP อย่างเป็นทางการด้วยท่าเต้นอันทรงพลัง</p>
+                        <a href="https://www.youtube.com/watch?v=P_V5L1a7oQE" target="_blank" class="btn btn-danger mt-auto fw-bold">
+                            <i class="bi bi-youtube me-2"></i>รับชมบน YouTube
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-secondary container my-5">
+
+    <section id="contact" class="container my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-uppercase display-6">ติดตาม & ติดต่องาน (Contact Us)</h2>
+            <div class="mx-auto bg-info" style="height: 3px; width: 80px;"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="p-4 bg-dark rounded border border-secondary h-100">
+                    <h4 class="mb-4 text-info"><i class="bi bi-share-fill me-2"></i>ช่องทางติดตาม LYKN</h4>
+                    <p class="text-secondary">ติดตามตารางงาน คอนเสิร์ต และผลงานใหม่ๆ ของวงได้ที่โซเชียลมีเดียหลัก:</p>
+                    
+                    <div class="d-grid gap-3 my-4">
+                        <a href="https://facebook.com/LYKNOFFICIAL" target="_blank" class="btn btn-outline-primary text-start fs-6"><i class="bi bi-facebook me-3 fs-5"></i>Facebook: LYKN Official</a>
+                        <a href="https://instagram.com/lykn_official" target="_blank" class="btn btn-outline-danger text-start fs-6"><i class="bi bi-instagram me-3 fs-5"></i>Instagram: @lykn_official</a>
+                        <a href="https://x.com/LYKNOFFICIAL" target="_blank" class="btn btn-outline-light text-start fs-6"><i class="bi bi-twitter-x me-3 fs-5"></i>X (Twitter): @LYKNOFFICIAL</a>
+                        <a href="https://youtube.com/@RISERMUSIC" target="_blank" class="btn btn-outline-danger text-start fs-6"><i class="bi bi-youtube me-3 fs-5"></i>YouTube: RISER MUSIC</a>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top border-secondary">
+                        <h5 class="text-warning"><i class="bi bi-telephone-fill me-2"></i>ข้อมูลติดต่องานแสดง / โฆษณา</h5>
+                        <p class="mb-1"><strong>สังกัดค่าย:</strong> RISER MUSIC (GMMTV)</p>
+                        <p class="mb-1"><strong>ผู้ดูแลงาน:</strong> คุณฝ่ายจัดหางาน RISER MUSIC</p>
+                        <p class="mb-1"><strong>เบอร์โทรศัพท์:</strong> 02-669-9000</p>
+                        <p class="mb-0"><strong>อีเมล:</strong> risermusic@gmmtv.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="p-4 bg-dark rounded border border-secondary">
+                    <h4 class="mb-4 text-info"><i class="bi bi-envelope-paper-fill me-2"></i>ฟอร์มส่งข้อความติดต่องาน</h4>
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label text-light">ชื่อผู้ติดต่อ / ชือนามบริษัทผู้จัดงาน</label>
+                            <input type="text" class="form-control bg-secondary text-white border-0" id="name" placeholder="ระบุชื่อของคุณหรือองค์กร" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label text-light">เบอร์โทรศัพท์ติดต่อกลับ</label>
+                            <input type="tel" class="form-control bg-secondary text-white border-0" id="phone" placeholder="08X-XXX-XXXX" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-light">อีเมล</label>
+                            <input type="email" class="form-control bg-secondary text-white border-0" id="email" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="event" class="form-label text-light">รายละเอียดงาน / วันที่และสถานที่</label>
+                            <textarea class="form-control bg-secondary text-white border-0" id="event" rows="3" placeholder="ระบุประเภทงาน (เช่น งานคอนเสิร์ต, งานอีเวนต์, พรีเซนเตอร์) วันที่และสถานที่จัดงาน" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100 py-2 fs-6">ส่งข้อมูลติดต่องาน</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-4 text-secondary mt-5">
+        <div class="container">
+            <p class="mb-0">© 2026 LYKN Fan Website Project. Created with HTML5, CSS & Bootstrap 5</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
