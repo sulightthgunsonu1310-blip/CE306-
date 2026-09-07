@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมฟาร์มปลูกผัก (Farming Game)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        /* รองรับ Accessibility: Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+
+    <!-- Header Section -->
+    <header class="p-4 bg-white dark:bg-slate-800 shadow-md">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">🌱 ฟาร์มปลูกผักหรรษา</h1>
+            
+            <div class="flex items-center gap-2">
+                <!-- ปุ่มสลับ Dark Mode -->
+                <button id="themeToggleBtn" aria-label="สลับโหมดมืด" class="p-2 rounded bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600">
+                    🌙 / ☀️
+                </button>
+                <!-- ปุ่มกติกา/วิธีเล่น -->
+                <button id="rulesBtn" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold">
+                    📖 วิธีเล่น & กติกา
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-4xl mx-auto w-full p-4 flex flex-col gap-6">
+
+        <!-- Display Game Status Panel -->
+        <section aria-label="สถานะผู้เล่น" class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+            <div class="text-center">
+                <span class="text-xs text-slate-500 dark:text-slate-400 block">เงินทุน</span>
+                <span id="moneyDisplay" class="text-xl font-bold text-amber-500">100 🪙</span>
+            </div>
+            <div class="text-center">
+                <span class="text-xs text-slate-500 dark:text-slate-400 block">เลเวลฟาร์ม</span>
+                <span id="levelDisplay" class="text-xl font-bold text-indigo-500">Lv. 1</span>
+            </div>
+            <div class="text-center">
+                <span class="text-xs text-slate-500 dark:text-slate-400 block">ความยาก</span>
+                <span id="difficultyDisplay" class="text-xl font-bold text-rose-500">ปกติ</span>
+            </div>
+            <div class="text-center">
+                <span class="text-xs text-slate-500 dark:text-slate-400 block">เก็บเกี่ยวแล้ว</span>
+                <span id="harvestCountDisplay" class="text-xl font-bold text-emerald-500">0 ต้น</span>
+            </div>
+        </section>
+
+        <!-- Controls Section -->
+        <section aria-label="ตัวเลือกการเล่น" class="flex flex-wrap gap-3 justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+            <div class="flex gap-2">
+                <button id="startBtn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold shadow">
+                    ▶️ เริ่มเกมใหม่
+                </button>
+                <button id="addLevelBtn" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold text-sm">
+                    ⚡ เพิ่ม Level (ทดสอบ)
+                </button>
+            </div>
+
+            <!-- Seed Selector Form -->
+            <form id="seedSelectForm" class="flex items-center gap-2">
+                <label for="cropSelect" class="text-sm font-medium">เลือกพืชที่จะปลูก:</label>
+                <select id="cropSelect" class="bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    <!-- จะถูกเติมตัวเลือกผ่าน JS ตาม Level -->
+                </select>
+            </form>
+        </section>
+
+        <!-- Game Plot Grid -->
+        <section aria-label="แปลงผักของคุณ">
+            <h2 class="text-lg font-semibold mb-3">🏡 แปลงเกษตรกรรม</h2>
+            <div id="farmGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- แปลงผักจะสร้างผ่าน JS -->
+            </div>
+        </section>
+
+        <!-- Alert & Status Notifications -->
+        <div id="statusMessage" role="status" aria-live="polite" class="p-4 rounded-xl text-center font-bold text-base hidden shadow-md"></div>
+
+    </main>
+
+    <!-- Modal Instructions & Rules -->
+    <div id="rulesModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white dark:bg-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
+            <h2 class="text-xl font-bold mb-4 text-emerald-600 dark:text-emerald-400">📖 กติกาและวิธีเล่น</h2>
+            <ul class="list-disc list-inside space-y-2 text-sm mb-6 text-slate-600 dark:text-slate-300">
+                <li>เลือกพืชที่ต้องการปลูก แล้วคลิก/กด Enter บนแปลงผักเพื่อปลูก</li>
+                <li>เมื่อพืชเติบโตเต็มที่ ให้กดคลิกเพื่อเก็บเกี่ยวและขายเอาเงิน</li>
+                <li><strong>การเพิ่ม Level:</strong> จะช่วยปลดล็อกพืชสายพันธุ์ใหม่ๆ ที่ทำกำไรได้สูงขึ้น</li>
+                <li><strong>เงื่อนไขแพ้:</strong> เงินหมด และไม่มีพืชโตในแปลงให้เก็บขาย</li>
+                <li><strong>เงื่อนไขชนะ:</strong> ทำเงินสะสมถึง 500 เหรียญ</li>
+            </ul>
+            <button id="closeRulesBtn" class="w-full py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded-lg font-semibold">
+                เข้าใจแล้ว
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // ข้อมูลชนิดพืช (ปลดล็อกตาม Level)
+        const CROP_TYPES = [
+            { id: 'carrot', name: '🥕 แครอท', cost: 10, sellPrice: 20, growTime: 3, reqLevel: 1 },
+            { id: 'corn', name: '🌽 ข้าวโพด', cost: 25, sellPrice: 55, growTime: 5, reqLevel: 2 },
+            { id: 'tomato', name: '🍅 มะเขือเทศ', cost: 50, sellPrice: 120, growTime: 8, reqLevel: 3 },
+            { id: 'pumpkin', name: '🎃 ฟักทอง', cost: 100, sellPrice: 260, growTime: 12, reqLevel: 4 }
+        ];
+
+        // สถานะเกม (State)
+        let gameState = {
+            money: 100,
+            level: 1,
+            harvestCount: 0,
+            isGameOver: false,
+            difficulty: 'ปกติ',
+            plots: Array(6).fill(null).map(() => ({ crop: null, stage: 0, timer: null }))
+        };
+
+        // DOM Elements
+        const moneyDisplay = document.getElementById('moneyDisplay');
+        const levelDisplay = document.getElementById('levelDisplay');
+        const harvestCountDisplay = document.getElementById('harvestCountDisplay');
+        const farmGrid = document.getElementById('farmGrid');
+        const cropSelect = document.getElementById('cropSelect');
+        const statusMessage = document.getElementById('statusMessage');
+        const rulesModal = document.getElementById('rulesModal');
+
+        // เริ่มต้นระบบ
+        function initGame() {
+            gameState.money = 100;
+            gameState.level = 1;
+            gameState.harvestCount = 0;
+            gameState.isGameOver = false;
+            
+            // ล้างแปลงผัก
+            gameState.plots.forEach(plot => {
+                if(plot.timer) clearInterval(plot.timer);
+                plot.crop = null;
+                plot.stage = 0;
+            });
+
+            updateUI();
+            renderFarmGrid();
+            showMessage("เริ่มต้นเกมใหม่เรียบร้อย! เลือกผักแล้วเริ่มปลูกได้เลย", "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200");
+        }
+
+        // อัปเดต Dropdown เลือกพืชตาม Level
+        function updateCropOptions() {
+            cropSelect.innerHTML = '';
+            CROP_TYPES.forEach(crop => {
+                if (gameState.level >= crop.reqLevel) {
+                    const opt = document.createElement('option');
+                    opt.value = crop.id;
+                    opt.textContent = `${crop.name} (ทุน: ${crop.cost} | ขาย: ${crop.sellPrice})`;
+                    cropSelect.appendChild(opt);
+                }
+            });
+        }
+
+        // วาดแปลงผัก 6 ช่อง
+        function renderFarmGrid() {
+            farmGrid.innerHTML = '';
+            gameState.plots.forEach((plot, index) => {
+                const button = document.createElement('button');
+                button.className = `p-6 rounded-xl border-2 flex flex-col items-center justify-center gap-2 min-h-[120px] transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-emerald-500 ${
+                    plot.crop 
+                    ? (plot.stage === 2 
+                        ? 'bg-amber-100 border-amber-400 dark:bg-amber-900/30 dark:border-amber-500 cursor-pointer animate-bounce' 
+                        : 'bg-emerald-50 border-emerald-300 dark:bg-emerald-900/20 dark:border-emerald-700')
+                    : 'bg-slate-200 border-dashed border-slate-400 dark:bg-slate-800 dark:border-slate-600 hover:border-emerald-500'
+                }`;
+                
+                button.setAttribute('aria-label', `แปลงที่ ${index + 1}: ${getPlotStatusText(plot)}`);
+                
+                if (!plot.crop) {
+                    button.innerHTML = `<span class="text-2xl">🤎</span><span class="text-xs text-slate-500">ว่างเปล่า</span>`;
+                } else if (plot.stage === 1) {
+                    button.innerHTML = `<span class="text-2xl">🌱</span><span class="text-xs font-semibold">กำลังโต...</span>`;
+                } else if (plot.stage === 2) {
+                    button.innerHTML = `<span class="text-3xl">${plot.crop.name.split(' ')[0]}</span><span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">พร้อมเก็บเกี่ยว!</span>`;
+                }
+
+                button.onclick = () => handlePlotClick(index);
+                farmGrid.appendChild(button);
+            });
+        }
+
+        function getPlotStatusText(plot) {
+            if (!plot.crop) return "ว่างเปล่า กดเพื่อปลูก";
+            if (plot.stage === 1) return `กำลังปลูก ${plot.crop.name}`;
+            return `${plot.crop.name} พร้อมเก็บเกี่ยว กดเพื่อขาย`;
+        }
+
+        // จัดการเมื่อกดที่แปลงผัก
+        function handlePlotClick(index) {
+            if (gameState.isGameOver) return;
+            const plot = gameState.plots[index];
+
+            // 1. กรณีแปลงว่าง -> ปลูก
+            if (!plot.crop) {
+                const selectedCropId = cropSelect.value;
+                const crop = CROP_TYPES.find(c => c.id === selectedCropId);
+
+                if (gameState.money < crop.cost) {
+                    showMessage("❌ เงินไม่พอสำหรับซื้อเมล็ดพันธุ์นี้!", "bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-200");
+                    return;
+                }
+
+                gameState.money -= crop.cost;
+                plot.crop = crop;
+                plot.stage = 1;
+                updateUI();
+                renderFarmGrid();
+
+                // นับเวลาการเติบโต
+                let timePassed = 0;
+                plot.timer = setInterval(() => {
+                    timePassed++;
+                    if (timePassed >= crop.growTime) {
+                        clearInterval(plot.timer);
+                        plot.stage = 2;
+                        renderFarmGrid();
+                    }
+                }, 1000);
+
+            } 
+            // 2. กรณีพืชโตเต็มที่ -> เก็บเกี่ยว
+            else if (plot.stage === 2) {
+                gameState.money += plot.crop.sellPrice;
+                gameState.harvestCount++;
+                
+                // ตรวจสอบการเพิ่ม Level จากการเก็บเกี่ยว
+                checkLevelUp();
+
+                plot.crop = null;
+                plot.stage = 0;
+                updateUI();
+                renderFarmGrid();
+                
+                checkGameStatus();
+            }
+        }
+
+        // ตรวจสอบและอัป Level
+        function checkLevelUp() {
+            const nextLevelReq = gameState.level * 3;
+            if (gameState.harvestCount >= nextLevelReq && gameState.level < CROP_TYPES.length) {
+                gameState.level++;
+                showMessage(`🎉 เลเวลขึ้นแล้ว! ปลดล็อกพืชชนิดใหม่: ${CROP_TYPES[gameState.level - 1].name}`, "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200");
+            }
+        }
+
+        // ปุ่มลัดเพิ่ม Level
+        document.getElementById('addLevelBtn').onclick = () => {
+            if (gameState.level < CROP_TYPES.length) {
+                gameState.level++;
+                updateUI();
+                showMessage(`⚡ เพิ่ม Level เป็น Lv.${gameState.level} แล้ว!`, "bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200");
+            } else {
+                showMessage("เลเวลเต็มสูงสุดแล้ว!", "bg-slate-200 text-slate-800");
+            }
+        };
+
+        // ตรวจสอบเงื่อนไขแพ้/ชนะ
+        function checkGameStatus() {
+            if (gameState.money >= 500) {
+                gameState.isGameOver = true;
+                showMessage("🏆 ยินดีด้วย! คุณชนะเกมแล้ว ทำเงินได้ถึง 500 เหรียญ!", "bg-emerald-500 text-white");
+                return;
+            }
+
+            const activeCrops = gameState.plots.some(p => p.crop !== null);
+            const minCost = Math.min(...CROP_TYPES.map(c => c.cost));
+            
+            if (gameState.money < minCost && !activeCrops) {
+                gameState.isGameOver = true;
+                showMessage("💀 เงินหมดแล้วและไม่มีพืชเหลือให้เก็บเกี่ยว! คุณแพ้แล้ว", "bg-rose-600 text-white");
+            }
+        }
+
+        function updateUI() {
+            moneyDisplay.textContent = `${gameState.money} 🪙`;
+            levelDisplay.textContent = `Lv. ${gameState.level}`;
+            harvestCountDisplay.textContent = `${gameState.harvestCount} ต้น`;
+            updateCropOptions();
+        }
+
+        function showMessage(text, colorClasses) {
+            statusMessage.className = `p-4 rounded-xl text-center font-bold text-sm block ${colorClasses}`;
+            statusMessage.textContent = text;
+        }
+
+        // Event Listeners สำหรับ Modal & Theme
+        document.getElementById('startBtn').onclick = initGame;
+        document.getElementById('rulesBtn').onclick = () => rulesModal.classList.remove('hidden');
+        document.getElementById('closeRulesBtn').onclick = () => rulesModal.classList.add('hidden');
+        document.getElementById('themeToggleBtn').onclick = () => document.documentElement.classList.toggle('dark');
+
+        // เริ่มต้นเกมเมื่อโหลดหน้าเว็บ
+        initGame();
+    </script>
+</body>
+</html>
