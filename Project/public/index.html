@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAILY CATER - ระบบสั่งอาหารกลางวันและเบรค</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-teal: #2b8a9e;
+            --brand-orange: #f59e0b;
+            --brand-orange-hover: #d97706;
+        }
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+            padding: 14px 0;
+        }
+        .brand-logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            line-height: 1.1;
+            letter-spacing: 0.5px;
+        }
+        .brand-logo span:first-child { color: var(--brand-teal); display: block; }
+        .brand-logo span:last-child { color: var(--brand-orange); display: block; }
+        .nav-link { font-weight: 500; color: #334155; margin: 0 8px; transition: 0.2s; }
+        .nav-link:hover { color: var(--brand-teal); }
+
+        /* Hero Banner */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.6)),
+                        url('https://images.unsplash.com/photo-1555244162-803834f70033?w=1400&q=80') center/cover no-repeat;
+            padding: 85px 20px;
+            border-radius: 0 0 32px 32px;
+            color: white;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #4fd1c5, #f6ad55, #4fd1c5);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineText 4s linear infinite;
+            letter-spacing: 1px;
+        }
+        @keyframes shineText {
+            to { background-position: 200% center; }
+        }
+        .search-box {
+            max-width: 520px;
+            margin: 24px auto;
+            position: relative;
+        }
+        .search-box input {
+            border-radius: 50px;
+            padding: 14px 50px 14px 24px;
+            border: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            font-size: 1rem;
+        }
+        .search-box .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--brand-orange);
+            font-size: 1.2rem;
+        }
+        .btn-pill-orange {
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-weight: 600;
+            border: none;
+            transition: 0.25s;
+        }
+        .btn-pill-orange:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35); color: white; }
+        .btn-pill-teal {
+            background: linear-gradient(135deg, #2b8a9e, #0d9488);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-weight: 600;
+            border: none;
+            transition: 0.25s;
+        }
+        .btn-pill-teal:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(43, 138, 158, 0.35); color: white; }
+
+        /* Menu Cards */
+        .menu-card {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.25s, box-shadow 0.25s;
+            height: 100%;
+        }
+        .menu-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.1);
+        }
+        .menu-card img {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .badge-snack { background-color: #fef3c7; color: #b45309; }
+        .badge-lunch { background-color: #ccfbf1; color: #0f766e; }
+
+        /* Order & Unpaid Card */
+        .panel-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        }
+        .qr-box { background: #f8fafc; border: 2px dashed var(--brand-teal); padding: 15px; border-radius: 12px; text-align: center; }
+
+        /* Contact Section Colorful Gradient */
+        .contact-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #134e4a 100%);
+            border-radius: 28px;
+            color: white;
+            padding: 45px 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.2);
+        }
+        .contact-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 24px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            height: 100%;
+        }
+        .contact-card:hover {
+            transform: translateY(-6px);
+            border-color: #f59e0b;
+        }
+        .ig-badge {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+        .line-badge {
+            background-color: #06C755;
+            color: white;
+        }
+        .phone-pulse {
+            animation: pulseGlow 2s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <div class="brand-logo">
+                    <span>DAILY</span>
+                    <span>CATER</span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="#">หน้าแรก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#menu-section">เมนูอาหาร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#order-section">สั่งอาหาร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact-section">ติดต่อเรา</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/history.html">📜 ประวัติการสั่งซื้อ</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <!-- ปุ่ม Admin แบบมีรหัสผ่าน -->
+                        <button type="button" class="btn btn-outline-dark rounded-pill px-4 fw-semibold btn-sm" onclick="openAdminLogin()">
+                            <i class="bi bi-shield-lock-fill me-1"></i> Admin
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero-section mb-5">
+        <div class="container">
+            <h1 class="hero-title">DAILY CATER</h1>
+            <p class="fs-5 fw-light mb-3">ระบบสั่งอาหารกลางวันและเบรค อร่อย รวดเร็ว ทันใจ!</p>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" class="form-control" placeholder="ค้นหาเมนูอาหาร หรือชุดเบรค..." onkeyup="filterMenus()">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 flex-wrap mt-3">
+                <button class="btn btn-pill-orange" onclick="selectCategory('lunchbox')">🍱 สั่งอาหารกลางวัน</button>
+                <button class="btn btn-pill-teal" onclick="selectCategory('snackbox')">🥐 ดูเมนูเบรค</button>
+                <button class="btn btn-light rounded-pill px-4 fw-semibold" onclick="selectCategory('all')">ทั้งหมด (12 เมนู)</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <!-- ส่วนแสดงรายการเมนูอาหาร (Menu Grid) -->
+        <section id="menu-section" class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h3 class="fw-bold mb-0" style="color: var(--brand-teal);">🍽️ เมนูแนะนำสำหรับจัดเบรค & อาหารกลางวัน</h3>
+                    <small class="text-muted">คลิก "สั่งเมนูนี้" ระบบจะดึงรายการไปใส่ในฟอร์มสั่งซื้อด้านล่างให้อัตโนมัติ</small>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary active" id="btnCatAll" onclick="selectCategory('all')">ทั้งหมด</button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnCatSnack" onclick="selectCategory('snackbox')">ชุดเบรค (Snackbox)</button>
+                    <button type="button" class="btn btn-outline-secondary" id="btnCatLunch" onclick="selectCategory('lunchbox')">อาหารกลางวัน (Lunchbox)</button>
+                </div>
+            </div>
+
+            <div class="row g-4" id="menuGrid"></div>
+        </section>
+
+        <!-- ส่วนฟอร์มสั่งซื้อ + รายการค้างชำระ -->
+        <section id="order-section" class="pt-3 mb-5">
+            <div class="row g-4">
+                <!-- ฝั่งซ้าย: ฟอร์มบันทึกข้อมูลลูกค้าและสั่งซื้อ -->
+                <div class="col-lg-5">
+                    <div class="panel-card p-4">
+                        <h4 class="fw-bold mb-1" style="color: var(--brand-teal);">📝 ข้อมูลผู้สั่งซื้อ & รายละเอียดจัดส่ง</h4>
+                        <p class="text-muted small mb-3">ระบบจะบันทึกข้อมูลลูกค้าอัตโนมัติหลังกดยืนยันสั่งซื้อ</p>
+                        
+                        <form id="orderForm">
+                            <div class="mb-2">
+                                <label class="form-label fw-medium">ชื่อ-นามสกุล ผู้สั่งซื้อ *</label>
+                                <input type="text" id="customerName" class="form-control" placeholder="เช่น คุณสมชาย ใจดี" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label fw-medium">เบอร์โทรศัพท์ติดต่อ *</label>
+                                <input type="tel" id="phone" class="form-control" placeholder="เช่น 081-234-5678" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label fw-medium">สถานที่ / ที่อยู่จัดส่ง *</label>
+                                <textarea id="address" class="form-control" rows="2" placeholder="ระบุอาคาร ชั้น ห้องประชุม หรือที่อยู่จัดส่ง" required></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label fw-medium">รายการอาหารที่เลือก *</label>
+                                <select class="form-select" id="menuSelect" onchange="calculatePreviewPrice()" required></select>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5">
+                                    <label class="form-label fw-medium">จำนวน (ชุด/กล่อง)</label>
+                                    <input type="number" id="quantity" class="form-control" value="10" min="1" oninput="calculatePreviewPrice()" required>
+                                </div>
+                                <div class="col-7">
+                                    <label class="form-label fw-medium">ยอดรวม / มัดจำ 50%</label>
+                                    <div class="form-control bg-light fw-bold text-success" id="pricePreview">550 / 275 บาท</div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label class="form-label fw-medium">วันที่จัดส่ง</label>
+                                    <input type="date" id="deliveryDate" class="form-control" value="2026-11-23" required>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-medium">เวลาจัดส่ง</label>
+                                    <input type="time" id="deliveryTime" class="form-control" value="10:30" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-danger">💳 ช่องทางชำระมัดจำ 50% ทันที</label>
+                                <select class="form-select" id="paymentMethod" required>
+                                    <option value="promptpay">📱 พร้อมเพย์ (สแกน QR Code)</option>
+                                    <option value="cash">💵 เงินสด (ชำระมัดจำล่วงหน้า)</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-pill-orange w-100 py-3 fs-6">ยืนยันสั่งซื้อ & บันทึกข้อมูล</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ฝั่งขวา: รายการค้างชำระมัดจำ + รายชื่อลูกค้าที่บันทึกล่าสุด -->
+                <div class="col-lg-7">
+                    <div class="panel-card p-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="fw-bold text-danger m-0">⚠️ รายการค้างชำระมัดจำ 50%</h4>
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="loadUnpaidOrders()">🔄 รีเฟรช</button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ผู้สั่ง & รายการ</th>
+                                        <th>มัดจำ 50%</th>
+                                        <th>สถานะ</th>
+                                        <th>ดำเนินการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="unpaidTableBody"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="alert alert-warning mt-2 mb-0 small" role="alert">
+                            🚨 <strong>หมายเหตุ:</strong> ออเดอร์ที่ยังไม่ชำระมัดจำ 50% จะยังไม่ส่งไปยังหน้าร้าน กดปุ่ม <strong>"💳 ชำระเงิน"</strong> เพื่อยืนยันออเดอร์
+                        </div>
+                    </div>
+
+                    <!-- กล่องแสดงข้อมูลลูกค้าที่ถูกบันทึกล่าสุดในระบบ -->
+                    <div class="panel-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="fw-bold m-0" style="color: var(--brand-teal);">👥 ข้อมูลลูกค้าที่บันทึกในระบบล่าสุด</h5>
+                            <span class="badge bg-info text-dark" id="customerCountBadge">0 รายชื่อ</span>
+                        </div>
+                        <p class="text-muted small mb-3">คลิกที่ชื่อลูกค้าเพื่อดึงข้อมูลมากรอกในฟอร์มสั่งซื้อซ้ำได้ทันที</p>
+                        <div id="savedCustomersList" class="d-flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ส่วนติดต่อเรา (Contact Us: เบอร์โทร + IG + LINE QR Code) -->
+        <section id="contact-section" class="contact-section">
+            <div class="text-center mb-4">
+                <span class="badge rounded-pill bg-warning text-dark px-3 py-2 fw-semibold mb-2">📞 CONTACT & ORDER SUPPORT</span>
+                <h2 class="fw-bold">ติดต่อสอบถาม & สั่งจัดเลี้ยงด่วน</h2>
+                <p class="text-light opacity-75">พร้อมให้บริการจัดเบรคและอาหารกลางวันทุกวัน ติดต่อได้ทั้งทางโทรศัพท์ Instagram และ LINE</p>
+            </div>
+
+            <div class="row g-4 align-items-stretch justify-content-center">
+                <!-- ช่องทางที่ 1: โทรศัพท์ -->
+                <div class="col-md-4">
+                    <div class="contact-card text-center d-flex flex-column justify-content-center align-items-center">
+                        <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center mb-3 phone-pulse" style="width: 75px; height: 75px; font-size: 2rem;">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <h5 class="fw-bold text-warning mb-1">สายด่วนติดต่อร้านค้า</h5>
+                        <p class="fs-4 fw-bold mb-1">093-768-4577</p>
+                        <span class="badge bg-light text-dark rounded-pill px-3 py-1 fs-6 mb-3">คุณกุ๊กกิ๊ก (ผู้ดูแลออเดอร์)</span>
+                        <a href="tel:0937684577" class="btn btn-pill-orange btn-sm px-4 mt-auto">
+                            <i class="bi bi-telephone-outbound me-1"></i> โทรออกทันที
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ช่องทางที่ 2: Instagram QR Code -->
+                <div class="col-md-4">
+                    <div class="contact-card text-center">
+                        <span class="badge ig-badge rounded-pill px-3 py-2 mb-3">
+                            <i class="bi bi-instagram me-1"></i> Instagram Official
+                        </span>
+                        <div class="bg-white p-2 rounded-4 d-inline-block mb-2 shadow">
+                            <img src="/ig-qr.jpg" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=160x160&color=d97706&data=https://instagram.com/SHEN_STARS_'" alt="IG QR Code" style="width: 155px; height: 155px; object-fit: cover; border-radius: 12px;">
+                        </div>
+                        <h6 class="fw-bold text-warning mb-0 mt-1">@SHEN_STARS_</h6>
+                        <small class="text-light opacity-75">สแกน QR Code เพื่อติดตามเมนูใหม่และรีวิว</small>
+                    </div>
+                </div>
+
+                <!-- ช่องทางที่ 3: LINE QR Code -->
+                <div class="col-md-4">
+                    <div class="contact-card text-center">
+                        <span class="badge line-badge rounded-pill px-3 py-2 mb-3">
+                            <i class="bi bi-line me-1"></i> LINE Official
+                        </span>
+                        <div class="bg-white p-2 rounded-4 d-inline-block mb-2 shadow">
+                            <img src="/line-qr.png" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=160x160&color=06C755&data=https://line.me/ti/p/~0937684577'" alt="LINE QR Code" style="width: 155px; height: 155px; object-fit: cover; border-radius: 12px;">
+                        </div>
+                        <h6 class="fw-bold text-success mb-0 mt-1">แอดไลน์สั่งอาหาร / ส่งสลิป</h6>
+                        <small class="text-light opacity-75">สแกนเพิ่มเพื่อนเพื่อสอบถามคิวจัดส่ง</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal ป๊อปอัพชำระเงินมัดจำ 50% -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4">
+                <div class="modal-header text-white rounded-top-4" style="background-color: var(--brand-teal);">
+                    <h5 class="modal-title fw-bold">💳 ชำระเงินมัดจำ 50% (DAILY CATER)</h5>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h6 class="text-muted" id="modalCustomerName"></h6>
+                    <h4 class="text-danger fw-bold my-2" id="modalDepositAmount">ยอดมัดจำที่ต้องชำระ: 0 บาท</h4>
+                    <p class="small text-secondary" id="modalRemainingAmount">(ส่วนที่เหลือชำระเมื่อได้รับอาหาร)</p>
+                    
+                    <div id="promptpaySection" class="qr-box my-3">
+                        <p class="fw-bold mb-1">สแกน QR Code พร้อมเพย์</p>
+                        <img src="/promptpay-qr.jpg" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PromptPay-004999188349368'" alt="PromptPay QR" class="img-fluid my-2 rounded shadow-sm" style="max-width: 220px;">
+                        <p class="fw-bold text-dark small mb-0">ชื่อบัญชี: น.ส. สุภัสสร ธัญเจริญ</p>
+                        <p class="small text-muted mb-0">บัญชี: xxx-x-x1208-x (รับเงินได้จากทุกธนาคาร)</p>
+                    </div>
+
+                    <div id="cashSection" class="alert alert-info my-3 d-none">
+                        💵 กรุณาชำระเงินสดจำนวนมัดจำ 50% กับพนักงานเพื่อยืนยันออเดอร์
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" onclick="paymentModalObj.hide()">ค้างชำระไว้ก่อน</button>
+                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold" id="btnConfirmPay">✅ ยืนยันชำระมัดจำ 50%</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ใส่รหัสผ่านเข้าหน้า Admin (รหัสเดียว: 67111873) -->
+    <div class="modal fade" id="adminLoginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header bg-dark text-white rounded-top-4">
+                    <h6 class="modal-title fw-bold"><i class="bi bi-shield-lock-fill text-warning me-1"></i> เข้าสู่ระบบ Admin</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <p class="small text-muted mb-3">กรุณากรอกรหัสผ่านผู้ดูแลระบบเพื่อเข้าจัดการออเดอร์</p>
+                    <input type="password" id="adminPasswordInput" class="form-control text-center fw-bold fs-5 mb-2" placeholder="••••••••" maxlength="20" onkeydown="if(event.key==='Enter') verifyAdminPassword()">
+                    <div id="adminErrorMsg" class="text-danger small d-none mb-2">❌ รหัสผ่านไม่ถูกต้อง!</div>
+                    <button type="button" class="btn btn-dark w-100 rounded-pill fw-bold mt-2" onclick="verifyAdminPassword()">เข้าสู่ระบบ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

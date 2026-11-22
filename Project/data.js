@@ -1,0 +1,38 @@
+let users = [
+    { id: 1, name: 'คุณสมชาย ใจดี', phone: '081-234-5678', address: 'อาคารวิศวกรรมศาสตร์ ชั้น 3 ห้อง 302', role: 'snackbox' },
+    { id: 2, name: 'คุณสุดา รักเรียน', phone: '089-876-5432', address: 'ตึกอธิการบดี ชั้น 1 ห้องประชุมใหญ่', role: 'snackbox' }
+];
+
+// เมนูอาหาร 12 รายการ (ชุดเบรค & อาหารกลางวัน)
+let menus = [
+    { id: 1, menu_name: 'ชุดเบรค A: แซนวิชแฮมชีส + น้ำส้มคั้นสด', category: 'snackbox', price: 55, desc: 'ขนมปังโฮลวีทนุ่ม ไส้แน่น คู่กับน้ำส้มแท้ 100%', img: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&q=80' },
+    { id: 2, menu_name: 'ชุดเบรค B: พายไก่ซอสขาว + กาแฟอเมริกาโน่', category: 'snackbox', price: 65, desc: 'พายอบกรอบร้อนๆ หอมเนยสด เสิร์ฟพร้อมกาแฟคั่วกลาง', img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&q=80' },
+    { id: 3, menu_name: 'ชุดเบรค C: ครัวซองต์เนยสด + ชาไทยเย็น', category: 'snackbox', price: 70, desc: 'ครัวซองต์ฝรั่งเศสอบใหม่ คู่ชาไทยเข้มข้นหวานน้อย', img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80' },
+    { id: 4, menu_name: 'ชุดเบรค D: เค้กกล้วยหอม + นมสดออร์แกนิก', category: 'snackbox', price: 50, desc: 'เค้กกล้วยหอมสูตรโฮมเมด เนื้อนุ่มละมุนลิ้น', img: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=500&q=80' },
+    { id: 5, menu_name: 'ชุดเบรค E: เอแคลร์ครีมสด + น้ำเก๊กฮวย', category: 'snackbox', price: 55, desc: 'เอแคลร์ลูกโตไส้ครีมวานิลลา หวานกำลังดี', img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500&q=80' },
+    { id: 6, menu_name: 'ชุดเบรค F: ขนมจีบกุ้งหมูสับ + น้ำใบเตยหอม', category: 'snackbox', price: 65, desc: 'ขนมจีบลูกใหญ่เต็มคำ เสิร์ฟพร้อมน้ำสมุนไพรเย็นชื่นใจ', img: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500&q=80' },
+    { id: 7, menu_name: 'ข้าวกล่อง: กะเพราไก่สับไข่ดาวกรอบ', category: 'lunchbox', price: 65, desc: 'ผัดกะเพราพริกแห้งรสจัดจ้าน เสิร์ฟพร้อมข้าวหอมมะลิ', img: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&q=80' },
+    { id: 8, menu_name: 'ข้าวกล่อง: ข้าวผัดกุ้งสดไซส์ใหญ่', category: 'lunchbox', price: 80, desc: 'ข้าวผัดหอมกลิ่นกระทะ กุ้งสดเด้ง พร้อมพริกน้ำปลา', img: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80' },
+    { id: 9, menu_name: 'ข้าวกล่อง: ข้าวหมูทอดกระเทียมพริกไทย', category: 'lunchbox', price: 70, desc: 'สันคอหมูหมักนุ่มทอดกระเทียมเจียวกรอบหอมฟุ้ง', img: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80' },
+    { id: 10, menu_name: 'ข้าวกล่อง: ข้าวไก่อบซอสเทอริยากิ', category: 'lunchbox', price: 75, desc: 'สะโพกไก่ย่างซอสญี่ปุ่นเข้มข้น เสิร์ฟคู่ผักลวก', img: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80' },
+    { id: 11, menu_name: 'ข้าวกล่อง: ข้าวผัดพริกแกงหมูชิ้นถั่วฝักยาว', category: 'lunchbox', price: 65, desc: 'พริกแกงใต้เข้มข้นถึงเครื่อง ผัดเข้าเนื้อ', img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=500&q=80' },
+    { id: 12, menu_name: 'ข้าวกล่อง: ข้าวอกไก่คลีน + ไข่ต้มยางมะตูม', category: 'lunchbox', price: 75, desc: 'เมนูสุขภาพ อกไก่นุ่มไม่แห้ง ทานคู่ข้าวไรซ์เบอร์รี่', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80' }
+];
+
+// ข้อมูลออเดอร์ตัวอย่าง 12 รายการ
+let orders = [
+    { id: 1, customer_name: 'คุณสมชาย ใจดี', phone: '081-234-5678', address: 'อาคารวิศวกรรมศาสตร์ ชั้น 3 ห้อง 302', delivery_date: '2026-11-23', delivery_time: '10:00', total_price: 1100, deposit_price: 550, remaining_price: 550, payment_method: 'promptpay', payment_status: 'paid_deposit', status: 'confirmed', items_text: 'ชุดเบรค A: แซนวิชแฮมชีส + น้ำส้มคั้นสด (x20)' },
+    { id: 2, customer_name: 'คุณสุดา รักเรียน', phone: '089-876-5432', address: 'ตึกอธิการบดี ชั้น 1 ห้องประชุมใหญ่', delivery_date: '2026-11-23', delivery_time: '12:00', total_price: 1300, deposit_price: 650, remaining_price: 650, payment_method: 'cash', payment_status: 'paid_deposit', status: 'preparing', items_text: 'ข้าวกล่อง: กะเพราไก่สับไข่ดาวกรอบ (x20)' },
+    { id: 3, customer_name: 'คุณอนันต์ สุขใจ', phone: '082-111-2233', address: 'คณะวิทยาศาสตร์ ห้อง LAB 1', delivery_date: '2026-11-24', delivery_time: '09:30', total_price: 650, deposit_price: 325, remaining_price: 325, payment_method: 'promptpay', payment_status: 'unpaid', status: 'pending', items_text: 'ชุดเบรค B: พายไก่ซอสขาว + กาแฟอเมริกาโน่ (x10)' },
+    { id: 4, customer_name: 'อ.วิชัย พัฒนาการ', phone: '085-444-5566', address: 'ห้องประชุมคณะเทคโนโลยีสารสนเทศ', delivery_date: '2026-11-24', delivery_time: '12:00', total_price: 2400, deposit_price: 1200, remaining_price: 1200, payment_method: 'promptpay', payment_status: 'paid_deposit', status: 'delivered', items_text: 'ข้าวกล่อง: ข้าวผัดกุ้งสดไซส์ใหญ่ (x30)' },
+    { id: 5, customer_name: 'คุณนภา ฟ้าใส', phone: '086-777-8899', address: 'สำนักงานหอสมุดกลาง ชั้น 2', delivery_date: '2026-11-25', delivery_time: '14:30', total_price: 1050, deposit_price: 525, remaining_price: 525, payment_method: 'promptpay', payment_status: 'paid_deposit', status: 'preparing', items_text: 'ชุดเบรค C: ครัวซองต์เนยสด + ชาไทยเย็น (x15)' },
+    { id: 6, customer_name: 'คุณกิตติพงษ์ วงศ์ใหญ่', phone: '081-999-0011', address: 'อาคารเรียนรวม 4 ห้อง 405', delivery_date: '2026-11-25', delivery_time: '12:00', total_price: 1400, deposit_price: 700, remaining_price: 700, payment_method: 'cash', payment_status: 'paid_deposit', status: 'pending', items_text: 'ข้าวกล่อง: ข้าวหมูทอดกระเทียมพริกไทย (x20)' },
+    { id: 7, customer_name: 'คุณปิยะดา ศรีสุข', phone: '083-222-3344', address: 'ฝ่ายทะเบียนและวัดผล ตึก 1', delivery_date: '2026-11-26', delivery_time: '10:00', total_price: 1000, deposit_price: 500, remaining_price: 500, payment_method: 'promptpay', payment_status: 'unpaid', status: 'pending', items_text: 'ชุดเบรค D: เค้กกล้วยหอม + นมสดออร์แกนิก (x20)' },
+    { id: 8, customer_name: 'คุณธนากร มีทรัพย์', phone: '087-555-6677', address: 'ศูนย์กีฬาในร่ม ห้องรับรอง', delivery_date: '2026-11-26', delivery_time: '12:15', total_price: 1875, deposit_price: 937.5, remaining_price: 937.5, payment_method: 'promptpay', payment_status: 'paid_deposit', status: 'confirmed', items_text: 'ข้าวกล่อง: ข้าวไก่อบซอสเทอริยากิ (x25)' },
+    { id: 9, customer_name: 'คุณศิริพร แก้วใส', phone: '084-888-9900', address: 'คณะบริหารธุรกิจ ห้องสัมมนา 2', delivery_date: '2026-11-27', delivery_time: '14:00', total_price: 1650, deposit_price: 825, remaining_price: 825, payment_method: 'cash', payment_status: 'paid_deposit', status: 'pending', items_text: 'ชุดเบรค E: เอแคลร์ครีมสด + น้ำเก๊กฮวย (x30)' },
+    { id: 10, customer_name: 'คุณณัฐพล คงมั่น', phone: '089-123-9876', address: 'อาคารปฏิบัติการวิศวกรรมเคมี', delivery_date: '2026-11-27', delivery_time: '12:00', total_price: 975, deposit_price: 487.5, remaining_price: 487.5, payment_method: 'promptpay', payment_status: 'paid_deposit', status: 'delivered', items_text: 'ข้าวกล่อง: ข้าวผัดพริกแกงหมูชิ้นถั่วฝักยาว (x15)' },
+    { id: 11, customer_name: 'คุณวรัญญา ใจงาม', phone: '082-654-3210', address: 'ศูนย์บริการสุขภาพนักศึกษา', delivery_date: '2026-11-28', delivery_time: '11:45', total_price: 1500, deposit_price: 750, remaining_price: 750, payment_method: 'promptpay', payment_status: 'paid_deposit', status: 'preparing', items_text: 'ข้าวกล่อง: ข้าวอกไก่คลีน + ไข่ต้มยางมะตูม (x20)' },
+    { id: 12, customer_name: 'คุณเอกชัย รุ่งเรือง', phone: '081-789-4561', address: 'ห้องประชุมสภามหาวิทยาลัย', delivery_date: '2026-11-28', delivery_time: '09:45', total_price: 2600, deposit_price: 1300, remaining_price: 1300, payment_method: 'promptpay', payment_status: 'paid_deposit', status: 'confirmed', items_text: 'ชุดเบรค F: ขนมจีบกุ้งหมูสับ + น้ำใบเตยหอม (x40)' }
+];
+
+module.exports = { users, menus, orders };

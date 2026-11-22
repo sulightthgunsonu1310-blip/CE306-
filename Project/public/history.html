@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ประวัติการสั่งซื้อ - CE306</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f4f8; font-family: 'Sukhumvit Set', 'Taviraj', sans-serif; }
+        .card { border-radius: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .header-bg { background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%); color: white; border-radius: 15px; padding: 25px; }
+    </style>
+</head>
+<body class="container py-4">
+
+    <!-- Header -->
+    <div class="header-bg mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h2>📜 ประวัติการสั่งซื้อ (Order History)</h2>
+            <p class="mb-0">ระบบติดตามและดูสถานะการชำระเงินมัดจำ</p>
+        </div>
+        <div>
+            <a href="/" class="btn btn-light btn-sm fw-bold">⬅️ กลับหน้าหลัก (สั่งซื้อ)</a>
+        </div>
+    </div>
+
+    <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="card-title text-primary m-0">ประวัติออเดอร์ทั้งหมด</h4>
+            <button class="btn btn-outline-secondary btn-sm" onclick="loadHistory()">🔄 รีเฟรช</button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>ผู้สั่งซื้อ</th>
+                        <th>รายการ</th>
+                        <th>ราคาทั้งหมด</th>
+                        <th>มัดจำ 50%</th>
+                        <th>ส่วนคงเหลือ</th>
+                        <th>สถานะการชำระเงิน</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadHistory() {
+            try {
+                // เรียกข้อมูลจาก data โดยตรงผ่าน fetch
+                const res = await fetch('/api/orders/daily_data');
+                const data = await res.json();
+                const tbody = document.getElementById('historyTableBody');
+                tbody.innerHTML = '';
+
+                data.data.forEach(order => {
+                    let payBadge = order.payment_status === 'paid_deposit' 
+                        ? '<span class="badge bg-success">ชำระมัดจำ 50% แล้ว</span>' 
+                        : '<span class="badge bg-danger">ค้างชำระ</span>';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>#${order.id}</td>
+                            <td><strong>${order.customer_name}</strong><br><small class="text-muted">📞 ${order.phone}</small></td>
+                            <td>${order.items_text}</td>
+                            <td>${order.total_price} บาท</td>
+                            <td><strong class="text-primary">${order.deposit_price} บาท</strong></td>
+                            <td><strong class="text-danger">${order.remaining_price} บาท</strong></td>
+                            <td>${payBadge}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error('Error loading history', err);
+            }
+        }
+
+        loadHistory();
+    </script>
+</body>
+</html>
